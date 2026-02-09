@@ -1,4 +1,7 @@
 import { useState } from "react";
+import DetailsButton from "./components/DetailsButton";
+import DetailsCard from "./components/DetailsCard";
+
 import languages from "./languages";
 
 const defaultTitle = "---";
@@ -11,35 +14,31 @@ export default function App() {
     defaultDescription, //languages[0].description,
   ]);
 
+  const handleCardFields = (language) => {
+    setCardFields(() =>
+      cardFields[0] === language.id
+        ? [0, defaultTitle, defaultDescription]
+        : [language.id, language.title, language.description],
+    );
+  };
+
   return (
     <>
       <header className="p-2">
         <h1>Learn Web development</h1>
       </header>
       <div className="container px-3 py-5">
-        {languages.map(({ id, title, description }) => {
-          return (
-            <button
-              key={id}
-              className={`btn btn-primary px-3 py-2 me-3 ${cardFields[0] === id ? "btn-warning" : ""}`}
-              onClick={() => {
-                setCardFields(() =>
-                  cardFields[0] === id
-                    ? [0, defaultTitle, defaultDescription]
-                    : [id, title, description],
-                );
-              }}
-            >
-              {title}
-            </button>
-          );
-        })}
-        <div className="card my-5">
-          <div className="card-body">
-            <h2 className="h5 card-title">{cardFields[1]}</h2>
-            <p className="card-text">{cardFields[2]}</p>
-          </div>
-        </div>
+        {languages.map((language) => (
+          <DetailsButton
+            key={language.id}
+            title={language.title}
+            isActive={cardFields[0] === language.id}
+            parentFnc={() => {
+              handleCardFields(language);
+            }}
+          />
+        ))}
+        <DetailsCard title={cardFields[1]} description={cardFields[2]} />
       </div>
     </>
   );
