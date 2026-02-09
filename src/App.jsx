@@ -1,20 +1,35 @@
+import { useState } from "react";
+import languages from "./languages";
+
 export default function App() {
+  const [cardFields, setCardFields] = useState([
+    languages[0].title,
+    languages[0].description,
+  ]);
+
   return (
     <>
       <header className="p-2">
         <h1>Learn Web development</h1>
       </header>
       <div className="container px-3 py-5">
-        <button className="btn btn-primary px-3 py-2 me-3">UNO</button>
-        <button className="btn btn-primary px-3 py-2 me-3">DUE</button>
-        <button className="btn btn-primary px-3 py-2 me-3">TRE</button>
+        {languages.map(({ id, title, description }) => {
+          return (
+            <button
+              key={id}
+              className="btn btn-primary px-3 py-2 me-3"
+              onClick={() => {
+                setCardFields([title, description]);
+              }}
+            >
+              {title}
+            </button>
+          );
+        })}
         <div className="card my-5">
           <div className="card-body">
-            <h2 className="h5 card-title">Card title</h2>
-            <p className="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card’s content.
-            </p>
+            <h2 className="h5 card-title">{cardFields[0]}</h2>
+            <p className="card-text">{cardFields[1]}</p>
           </div>
         </div>
       </div>
