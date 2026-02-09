@@ -1,10 +1,14 @@
 import { useState } from "react";
 import languages from "./languages";
 
+const defaultTitle = "---";
+const defaultDescription = "Nessun linguaggio selezionato.";
+
 export default function App() {
   const [cardFields, setCardFields] = useState([
-    languages[0].title,
-    languages[0].description,
+    0,
+    defaultTitle, //languages[0].title,
+    defaultDescription, //languages[0].description,
   ]);
 
   return (
@@ -17,9 +21,13 @@ export default function App() {
           return (
             <button
               key={id}
-              className="btn btn-primary px-3 py-2 me-3"
+              className={`btn btn-primary px-3 py-2 me-3 ${cardFields[0] === id ? "btn-warning" : ""}`}
               onClick={() => {
-                setCardFields([title, description]);
+                setCardFields(() =>
+                  cardFields[0] === id
+                    ? [0, defaultTitle, defaultDescription]
+                    : [id, title, description],
+                );
               }}
             >
               {title}
@@ -28,8 +36,8 @@ export default function App() {
         })}
         <div className="card my-5">
           <div className="card-body">
-            <h2 className="h5 card-title">{cardFields[0]}</h2>
-            <p className="card-text">{cardFields[1]}</p>
+            <h2 className="h5 card-title">{cardFields[1]}</h2>
+            <p className="card-text">{cardFields[2]}</p>
           </div>
         </div>
       </div>
